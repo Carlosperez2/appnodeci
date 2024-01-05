@@ -29,9 +29,13 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
+    - name: Check Job Status status and fail if they are red
 
+      if: env.WORKFLOW_CONCLUSION == 'failure'
+      run: exit 1
+      
   deploy:
-  
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
